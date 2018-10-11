@@ -1,7 +1,6 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include "driver.c"
-#include "escalate.c"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Hendrik 'T4cC0re' Meyer");
@@ -11,15 +10,10 @@ MODULE_VERSION("0.1");
 static int pid = 0;
 
 module_param(pid, int, S_IRUGO);
-MODULE_PARM_DESC(pid, "Process ID to escalate");
+MODULE_PARM_DESC(pid, "Process ID to escalate on load");
 
 static int __init init(void) {
     printk(KERN_INFO "escalator: Init\n");
-
-    if (pid <= 1) {
-        printk(KERN_ALERT "escalator: pid not valid.");
-        return -1;
-    }
 
     escalate(pid);
 

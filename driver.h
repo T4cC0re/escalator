@@ -4,26 +4,25 @@
 #include <linux/device.h>  // Header to support the kernel Driver Model
 #include <linux/fs.h>      // Header for the Linux file system support
 #include <linux/uaccess.h> // Required for the copy_to_user function
+#include<linux/sysfs.h>
+#include<linux/kobject.h>
 
-#define  DEVICE_NAME "escalator" // Appear as /dev/<DEVICE_NAME>
-#define  CLASS_NAME  "escalator" // Appear as /sys/class/<CLASS_NAME>
+#define DEVICE_NAME "escalator"       // Appear as /dev/<DEVICE_NAME>
+#define CLASS_NAME  "escalator"       // Appear as /sys/class/<CLASS_NAME>
+#define SYSFS_ATTR   escalate_process // Appear as /sys/kernel/<SYSFS_ATTR> - DO NOT QUOTE!
 
 static int majorNumber;                 // For MKDEV, registered via register_chrdev and DEVICE_NAME
 static struct class* devClass  = NULL; // Device class
 static struct device* dev = NULL;       // Actual device
+struct kobject *kobj_ref;
 
-static int dev_open(struct inode *, struct file *);
-static int dev_release(struct inode *, struct file *);
-static ssize_t dev_read(struct file *, char *, size_t, loff_t *);
-static ssize_t dev_write(struct file *, const char *, size_t, loff_t *);
+// sysfs
+static ssize_t sysfs_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf);
+static ssize_t sysfs_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count);
+struct kobj_attribute SYSFS_ATTR = __ATTR(SYSFS_ATTR, 0660, sysfs_show, sysfs_store);
 
 // Implemented fs operations
-static struct file_operations fops =
-{
-    .open = dev_open,
-    .read = dev_read,
-    .write = dev_write,
-    .release = dev_release,
+static struct file_operations fops = {
     .owner = THIS_MODULE,
 };
 

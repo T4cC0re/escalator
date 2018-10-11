@@ -4,16 +4,20 @@
 # Usage
 
 ```
+echo <pid of process to escalate> | sudo tee /sys/kernel/escalator/escalate_process
+
+# Install via
+sudo make install
+modprobe escalator pid=<pid of process to escalate - Optional>
+
+# Load without install via
 make # Youn need kernel headers installed!
-sudo insmod ./escalator.ko pid=<pid of process to escalate>
-sudo rmmod ./escalator.ko
+sudo insmod ./escalator.ko pid=<pid of process to escalate - Optional>
+
 ```
 
 # TODO
 
- - Char dev based escalation / maybe sysfs instead?
-   - load module once
-   - escalate via `echo <pid> | sudo tee /dev/escalator`
-   - dev should be only writable by root for security reasons
  - `pkill` like 'escalate all processes that match X'
  - set capabilities
+ - set any UID/GID desired instead of always setting 0 (root)
