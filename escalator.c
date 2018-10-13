@@ -2,10 +2,10 @@
 #include <linux/kernel.h>
 #include "driver.c"
 
-MODULE_LICENSE("Apache-2.0");
+MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Hendrik 'T4cC0re' Meyer");
 MODULE_DESCRIPTION("Sudo after the fact! / Escalate running processes to root");
-MODULE_VERSION("0.1");
+MODULE_VERSION("1.0");
 
 static int pid = 0;
 

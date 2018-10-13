@@ -42,3 +42,7 @@ echo <pid> | sudo tee /sys/kernel/escalate_process
 ## Is it any good?
 
 [Yes](https://news.ycombinator.com/item?id=3067434)
+
+## License
+
+GPL2.0
