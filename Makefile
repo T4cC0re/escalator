@@ -6,5 +6,6 @@ clean:
 	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
 
 install:
-	cp escalator.ko /lib/modules/$(shell uname -r)
+	cp escalator.ko /lib/modules/$(shell uname -r)/
 	depmod -a
+	cp escalator /usr/local/bin/

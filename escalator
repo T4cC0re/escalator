@@ -1,10 +1,38 @@
 #!/usr/bin/env bash
 
-set -e
-
 error() {
   echo $* 1>&2
   return 1
+}
+
+escalate_process() {
+  PID=${1:?"Please specify one or more process IDs"}
+
+  if ! [ -d /proc/$PID ]; then
+    error "[$PID] Refusing to patch root process"
+    return 1
+  fi
+
+  UID_STRING=$(grep Uid: /proc/$PID/status)
+  PROC_UID=$(echo "$UID_STRING" | awk '{print $2}')
+
+  if [ $PROC_UID -eq 0 ]; then
+    error "[$PID] Refusing to patch root process"
+    return 1
+  fi
+
+  echo $PID > /sys/kernel/escalate_process
+
+  UID_STRING2=$(grep Uid: /proc/$PID/status)
+  PROC_UID2=$(echo "$UID_STRING2" | awk '{print $2}')
+
+  echo -e "[$PID] UID before escalation: $PROC_UID\n[$PID] UID after escalation:  $PROC_UID2"
+
+  # Exit with code 1 if before and after are the same
+  if [ $PROC_UID -eq $PROC_UID2 ]; then
+    error "[$PID] Patch failed"
+    return 1
+  fi
 }
 
 if [ $UID -ne 0 ]; then
@@ -12,27 +40,13 @@ if [ $UID -ne 0 ]; then
   exit 1
 fi
 
+set -e
 if ! lsmod | grep -q escalator; then
   modprobe escalator || insmod $(dirname $0)/escalator.ko || error "Unable to load kernel module"
   echo "Kernel module loaded!"
 fi
+set +e
 
-PID=${1:?"Please specify a process ID"}
-
-[ -d /proc/$PID ] || error "Refusing to patch root process"
-
-UID_STRING=$(grep Uid: /proc/$PID/status)
-PROC_UID=$(echo "$UID_STRING" | awk '{print $2}')
-
-
-[ $PROC_UID -eq 0 ] && error "Refusing to patch root process"
-
-echo $PID > /sys/kernel/escalate_process
-
-UID_STRING2=$(grep Uid: /proc/$PID/status)
-PROC_UID2=$(echo "$UID_STRING2" | awk '{print $2}')
-
-echo -e "UID before escalation: $PROC_UID\nUID after escalation:  $PROC_UID2"
-
-# Exit with code 1 if before and after are the same
-[ $PROC_UID -ne $PROC_UID2 ]
+for PID in $@; do
+  escalate_process $PID
+done
