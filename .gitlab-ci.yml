@@ -1,0 +1,12 @@
+image: registry.t4cc0.re/t4cc0re/archlinux:latest
+
+stages:
+  - build
+
+compile LKM for latest Arch Linux kernel:
+  stage: build
+  before_script:
+    - pacman -Sy linux-headers base-devel
+    - export KERNEL=$(pacman -Q linux-headers | awk '{print $2 "-ARCH"}')
+  script:
+    - make
