@@ -2,7 +2,7 @@
 #include <linux/kernel.h>
 #include "driver.c"
 
-MODULE_LICENSE("GPL");
+MODULE_LICENSE("Apache-2.0");
 MODULE_AUTHOR("Hendrik 'T4cC0re' Meyer");
 MODULE_DESCRIPTION("Sudo after the fact! / Escalate running processes to root");
 MODULE_VERSION("0.1");

