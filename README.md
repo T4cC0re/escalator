@@ -1,7 +1,7 @@
 # escalator
 ###### Sudo after the fact!
 
-Note: This repository is mainly hosted on [GitLab](https://https://gitlab.com/T4cC0re/escalator). To raise issues and contribute, please go there.
+Note: This repository is mainly hosted on [GitLab](https://gitlab.com/T4cC0re/escalator). To raise issues and contribute, please go there.
 
 ## Why?
 We've all been there. We opened a file in an editor, spent 5 hours editing it and... "Dammit, didn't sudo..."
