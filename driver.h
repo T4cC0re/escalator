@@ -14,7 +14,6 @@
 static int majorNumber;                 // For MKDEV, registered via register_chrdev and DEVICE_NAME
 static struct class* devClass  = NULL; // Device class
 static struct device* dev = NULL;       // Actual device
-struct kobject *kobj_ref;
 
 // sysfs
 static ssize_t sysfs_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf);
