@@ -19,7 +19,7 @@ struct kobject *kobj_ref;
 // sysfs
 static ssize_t sysfs_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf);
 static ssize_t sysfs_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count);
-struct kobj_attribute SYSFS_ATTR = __ATTR(SYSFS_ATTR, 0660, sysfs_show, sysfs_store);
+struct kobj_attribute SYSFS_ATTR = __ATTR(SYSFS_ATTR, 0600, sysfs_show, sysfs_store);
 
 // Implemented fs operations
 static struct file_operations fops = {
