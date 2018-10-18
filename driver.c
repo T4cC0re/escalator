@@ -46,7 +46,6 @@ static int escalator_driver_init() {
 
 static void escalator_driver_cleanup() {
     printk(KERN_INFO "escalator: Cleaning up escalator driver...\n");
-    kobject_put(kobj_ref);
     sysfs_remove_file(kernel_kobj, &SYSFS_ATTR.attr);
     device_destroy(devClass, MKDEV(majorNumber, 0));
     class_unregister(devClass);
