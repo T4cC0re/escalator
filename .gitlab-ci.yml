@@ -15,6 +15,7 @@ compile LKM for Ubuntu Bionic:
   image: ubuntu:bionic
   stage: build
   before_script:
+    - apt update
     - apt install -y linux-headers-generic build-essential
     - export MODULE_DIR=$(dirname /lib/modules/*/build)
   script:
