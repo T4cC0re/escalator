@@ -1,11 +1,14 @@
+KERNEL?=$(shell uname -r)
+MODULE_DIR?=/lib/modules/$(KERNEL)
+BIN_DIR?=/usr/local/bin
+
 obj-m+=escalator.o
 
 all:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
+	make -C $(MODULE_DIR)/build/ M=$(PWD) modules
 clean:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
-
+	make -C $(MODULE_DIR)/build/ M=$(PWD) clean
 install:
-	cp escalator.ko /lib/modules/$(shell uname -r)/
+	cp escalator.ko $(MODULE_DIR)/
 	depmod -a
-	cp escalator /usr/local/bin/
+	cp escalator $(BIN_DIR)/
