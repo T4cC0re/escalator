@@ -2,7 +2,7 @@ stages:
   - build
 
 compile LKM for latest Arch Linux kernel:
-  image: registry.t4cc0.re/t4cc0re/archlinux:latest
+  image: archlinux/base:latest
   stage: build
   before_script:
     - pacman -Sy --noconfirm archlinux-keyring
