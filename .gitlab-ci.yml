@@ -8,7 +8,7 @@ compile LKM for latest Arch Linux kernel:
     - pacman -Sy --noconfirm archlinux-keyring
     - pacman-key --init
     - pacman -Syu --noconfirm linux-headers base-devel
-    - export KERNEL=$(pacman -Q linux-headers | awk '{print $2 "-ARCH"}' | sed 's/.arch/-arch/g')
+    - export MODULE_DIR=$(dirname /lib/modules/*/build)
   script:
     - make
 
